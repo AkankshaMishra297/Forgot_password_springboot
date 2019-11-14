@@ -185,21 +185,14 @@ public class UserAccountController {
 		
 		
 		Calendar calendar = Calendar.getInstance();
-        Calendar calendar1 = Calendar.getInstance();
          System.out.println("Current Date = " + calendar.getTime());
 
-        calendar1.add(Calendar.MINUTE, 5);
-        System.out.println("Updated Date+5 = " + calendar1.getTime());
-        System.out.println("Token Date = " + token.getCreatedDate());
         
-        System.out.println("Updated Date+5 = " + calendar1.getTime().getTime());
-        System.out.println("Token Date = " + token.getCreatedDate().getTime());
-
 
   
-        System.out.println(calendar1.getTime().getTime()-token.getCreatedDate().getTime());
         
-        if(calendar1.getTime().getTime()-token.getCreatedDate().getTime()>300036)
+        
+        if(calendar.getTime().getTime()-token.getCreatedDate().getTime()>(5*60*1000))
         {
         	System.out.println("link is expired");
 			modelAndView.addObject("message", "link is expired");
