@@ -1,5 +1,7 @@
 package com.springsecurity.demo.controller;
 
+import java.util.Calendar;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Controller;
@@ -75,6 +77,9 @@ public class UserAccountController {
 	@RequestMapping(value="/confirm-account", method= {RequestMethod.GET, RequestMethod.POST})
 	public ModelAndView confirmUserAccount(ModelAndView modelAndView, @RequestParam("token")String confirmationToken) {
 		ConfirmationToken token = confirmationTokenRepository.findByConfirmationToken(confirmationToken);
+		
+		
+		
 		
 		if(token != null)
 		{
@@ -174,8 +179,35 @@ public class UserAccountController {
 	public ModelAndView validateResetToken(ModelAndView modelAndView, @RequestParam("token")String confirmationToken)
 	{
 		ConfirmationToken token = confirmationTokenRepository.findByConfirmationToken(confirmationToken);
+		System.out.println("aaazzzzzzzzzzzaaaaaaaaaaaa");
 		
-		if(token != null) {
+		
+		
+		
+		Calendar calendar = Calendar.getInstance();
+        Calendar calendar1 = Calendar.getInstance();
+         System.out.println("Current Date = " + calendar.getTime());
+
+        calendar1.add(Calendar.MINUTE, 5);
+        System.out.println("Updated Date+5 = " + calendar1.getTime());
+        System.out.println("Token Date = " + token.getCreatedDate());
+        
+        System.out.println("Updated Date+5 = " + calendar1.getTime().getTime());
+        System.out.println("Token Date = " + token.getCreatedDate().getTime());
+
+
+  
+        System.out.println(calendar1.getTime().getTime()-token.getCreatedDate().getTime());
+        
+        if(calendar1.getTime().getTime()-token.getCreatedDate().getTime()>300036)
+        {
+        	System.out.println("link is expired");
+			modelAndView.addObject("message", "link is expired");
+
+			modelAndView.setViewName("error");
+
+        }
+        else if(token != null) {
 			User user = userRepository.findByEmailIdIgnoreCase(token.getUser().getEmailId());
 			user.setEnabled(true);
 			userRepository.save(user);
@@ -183,7 +215,7 @@ public class UserAccountController {
 			modelAndView.addObject("emailId", user.getEmailId());
 			modelAndView.setViewName("resetPassword");
 		} else {
-			modelAndView.addObject("message", "The link is invalid or broken!");
+			modelAndView.addObject("message", "The link is invalid or broken!89415112");
 			modelAndView.setViewName("error");
 		}
 		
@@ -195,7 +227,17 @@ public class UserAccountController {
 	 */
 	@RequestMapping(value = "/reset-password", method = RequestMethod.POST)
 	public ModelAndView resetUserPassword(ModelAndView modelAndView, User user) {
-		// ConfirmationToken token = confirmationTokenRepository.findByConfirmationToken(confirmationToken);
+
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		
 		if(user.getEmailId() != null) {
 			// use email to find user
@@ -215,28 +257,5 @@ public class UserAccountController {
 	}
 
 
-	public UserRepository getUserRepository() {
-		return userRepository;
-	}
-
-	public void setUserRepository(UserRepository userRepository) {
-		this.userRepository = userRepository;
-	}
-
-	public ConfirmationTokenRepository getConfirmationTokenRepository() {
-		return confirmationTokenRepository;
-	}
-
-	public void setConfirmationTokenRepository(ConfirmationTokenRepository confirmationTokenRepository) {
-		this.confirmationTokenRepository = confirmationTokenRepository;
-	}
-
-	public EmailSenderService getEmailSenderService() {
-		return emailSenderService;
-	}
-
-	public void setEmailSenderService(EmailSenderService emailSenderService) {
-		this.emailSenderService = emailSenderService;
-	}
 	
 }

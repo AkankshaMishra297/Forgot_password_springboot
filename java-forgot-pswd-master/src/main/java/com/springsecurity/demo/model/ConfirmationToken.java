@@ -21,12 +21,22 @@ public class ConfirmationToken {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name="token_id")
 	private long tokenid;
+	
+	
+	
+
+   
+
+	
 
 	@Column(name="confirmation_token")
 	private String confirmationToken;
 	
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date createdDate;
+	
+	
+    private Date expiryDate;
 	
 	@OneToOne(targetEntity = User.class, fetch = FetchType.EAGER)
     @JoinColumn(nullable = false, name = "user_id")
@@ -72,4 +82,8 @@ public class ConfirmationToken {
 	public void setTokenid(long tokenid) {
 		this.tokenid = tokenid;
 	}
+
+	
+
+	
 }
